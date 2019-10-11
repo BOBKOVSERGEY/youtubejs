@@ -115,6 +115,17 @@ document.addEventListener('DOMContentLoaded', () => {
   {
     // создаем элемент в памяти
     const divYoutuber = document.createElement('div');
+    const youtuberItems = document.querySelectorAll('[data-youtuber]');
+    divYoutuber.classList.add('youTuberModal');
+    document.body.appendChild(divYoutuber);
+
+    youtuberItems.forEach((elem) => {
+      elem.addEventListener('click', () => {
+        const idVideo = elem.dataset.youtuber;
+        divYoutuber.style.display = 'block';
+      })
+    });
+
   }
 
 
