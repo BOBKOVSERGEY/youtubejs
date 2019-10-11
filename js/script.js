@@ -37,5 +37,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
   }
 
+  // menu
+  {
+    const burger = document.querySelector('.spinner'),
+    sidebarMenu = document.querySelector('.sidebarMenu');
+
+    burger.addEventListener('click', () => {
+      burger.classList.toggle('active');
+      sidebarMenu.classList.toggle('rollUp');
+    });
+
+    sidebarMenu.addEventListener('click', (e) => {
+      let target = e.target;
+
+      target = target.closest('a[href="#"]');
+
+      if (target) {
+        // получаем родителя ссылки
+        const parentTarget = target.parentNode;
+
+        sidebarMenu.querySelectorAll('li').forEach((elem)=> {
+          if (elem === parentTarget) {
+            elem.classList.add('active');
+          } else {
+            elem.classList.remove('active');
+          }
+        })
+
+      }
+
+    });
+
+  }
+
+  // modal window
+  {
+    // создаем элемент в памяти
+    const divYoutuber = document.createElement('div');
+  }
+
 
 });
