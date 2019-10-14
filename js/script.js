@@ -113,19 +113,87 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // modal window
   {
+
     // создаем элемент в памяти
-    const divYoutuber = document.createElement('div');
     const youtuberItems = document.querySelectorAll('[data-youtuber]');
-    divYoutuber.classList.add('youTuberModal');
-    document.body.appendChild(divYoutuber);
+
+    document.body.insertAdjacentHTML('beforeend', `
+    <div class="youTuberModal">
+      <div id="youtuberClose">&#215;</div>
+      <div id="youtuberContainer"></div>
+    </div>
+    `);
+
+    const youTuberModal = document.querySelector('.youTuberModal');
+    const youtuberContainer = document.getElementById('youtuberContainer');
+
+    const qw = [3840, 2560, 1920, 1280, 854, 640, 426, 256];
+    const qh = [2160, 1440, 1080, 720, 480, 360, 240, 144];
+
+
+
+    const sizeVideo = () => {
+
+      let ww = document.documentElement.clientWidth;
+      let wh = document.documentElement.clientHeight;
+
+      for (let i = 0; i < qw.length; i++) {
+        if (ww > qw[i]) {
+
+          youtuberContainer.querySelector('iframe').style.cssText = `
+            width: ${qw[i]}px;
+            height: ${qh[i]}px;
+          `;
+
+          youtuberContainer.style.cssText = `
+            width: ${qw[i]}px;
+            height: ${qh[i]}px;
+            top: ${(wh - qh[i]) / 2}px;
+            left: ${(ww - qw[i]) / 2}px;
+          `;
+
+          // выход из цикла
+          break;
+        }
+      }
+    };
 
     youtuberItems.forEach((elem) => {
       elem.addEventListener('click', () => {
         const idVideo = elem.dataset.youtuber;
-        divYoutuber.style.display = 'block';
-      })
+        youTuberModal.style.display = 'block';
+
+        const youTuberFrame = document.createElement('iframe');
+        youTuberFrame.src = `https://youtube.com/embed/${idVideo}`;
+
+        youtuberContainer.insertAdjacentElement('beforeend', youTuberFrame);
+
+
+        window.addEventListener('resize', sizeVideo);
+
+        sizeVideo();
+
+      });
     });
 
+    youTuberModal.addEventListener('click', () => {
+      youTuberModal.style.display = '';
+      youtuberContainer.textContent = '';
+
+      // удаляем событие
+      window.removeEventListener('resize', sizeVideo);
+    });
+
+
+
+
+
+  }
+
+  // API Youtube
+  {
+    const API_KEY = 'AIzaSyAW5TwOnT1_-KykhwzhgNiUnPtxsPzeHqo';
+    const CLIENT_ID = '221651235168-snkshq00cdo1mtvl1i673b9lovp88oe1.apps.googleusercontent.com';
   }
 
 
