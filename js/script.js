@@ -192,8 +192,49 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // API Youtube
   {
-    const API_KEY = 'AIzaSyAW5TwOnT1_-KykhwzhgNiUnPtxsPzeHqo';
-    const CLIENT_ID = '221651235168-snkshq00cdo1mtvl1i673b9lovp88oe1.apps.googleusercontent.com';
+    const API_KEY = 'AIzaSyDTkvUrFs9B9NVrAzfF7YUvJAnncdUXkqU';
+    const CLIENT_ID = '126598786727-gr8jrtc1kiofgn292a0uhc0abbf4ue2p.apps.googleusercontent.com';
+
+    // авторизация
+    {
+
+      const buttonAuth = document.getElementById('authorize');
+      const authBlock = document.querySelector('.auth');
+
+      gapi.load("client:auth2", () => gapi.auth2.init({client_id: CLIENT_ID}));
+
+      const authenticate = () => gapi.auth2.getAuthInstance()
+          .signIn({scope: "https://www.googleapis.com/auth/youtube.readonly"})
+          .then(() => console.log("Sign-in successful"))
+          .catch(errorAuth);
+
+
+      const loadClient = () => {
+        gapi.client.setApiKey(API_KEY);
+        return gapi.client.load("https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest")
+            .then(() => console.log("GAPI client loaded for API"))
+            .then(() => authBlock.style.display = 'none')
+            .catch(errorAuth);
+      };
+
+
+
+      buttonAuth.addEventListener('click', () => {
+        authenticate().then(loadClient);
+      });
+
+      const errorAuth = err => {
+        console.error(err);
+        authBlock.style.display = '';
+      };
+
+    }
+
+    // requests
+    {
+
+    }
+
   }
 
 
